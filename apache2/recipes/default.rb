@@ -38,10 +38,17 @@ service "apache2" do
     # during the initial bootstrap.
     restart_command "/sbin/service httpd restart && sleep 1"
     reload_command "/sbin/service httpd reload && sleep 1"
-  when "debian","ubuntu"
+  when "debian"
     service_name "apache2"
     restart_command "/usr/sbin/invoke-rc.d apache2 restart && sleep 1"
     reload_command "/usr/sbin/invoke-rc.d apache2 reload && sleep 1"
+  when "ubuntu"
+    service_name "apache2"
+    restart_command "/usr/sbin/invoke-rc.d apache2 restart && sleep 1"
+    reload_command "/usr/sbin/invoke-rc.d apache2 reload && sleep 1"
+    if '8.04' == node[:platform_version]
+      status_command "/usr/sbin/apache2ctl status"
+    end
   when "arch"
     service_name "httpd"
   end
